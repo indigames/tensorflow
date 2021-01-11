@@ -68,37 +68,6 @@ echo Cleaning up...
     )
     mkdir %OUTPUT_LIBS_RELEASE%
 
-cd %PROJECT_DIR%
-echo Compiling armeabi-v7a...
-    if [%BUILD_DEBUG%]==[1] (
-        if not exist %BUILD_DIR%\armeabi-v7a\Debug (
-            mkdir %BUILD_DIR%\armeabi-v7a\Debug
-        )
-        cd %BUILD_DIR%\armeabi-v7a\Debug
-        echo Generating armeabi-v7a Debug CMAKE project ...
-        cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=!ANDROID_TOOLCHAIN! -DANDROID_ABI=armeabi-v7a -DANDROID_PLATFORM=android-21 -DCMAKE_BUILD_TYPE=Debug %PROJECT_DIR%
-        if %ERRORLEVEL% NEQ 0 goto ERROR
-
-        echo Compiling armeabi-v7a - Debug...
-        cmake --build .
-        if %ERRORLEVEL% NEQ 0 goto ERROR
-        for /r %CD% %%f in (*.a) do xcopy /y %%f %OUTPUT_LIBS_DEBUG%\armeabi-v7a\
-        for /r %CD% %%f in (*.so) do xcopy /y %%f %OUTPUT_LIBS_DEBUG%\armeabi-v7a\
-    )
-
-    if not exist %BUILD_DIR%\armeabi-v7a\Release (
-        mkdir %BUILD_DIR%\armeabi-v7a\Release
-    )
-    cd %BUILD_DIR%\armeabi-v7a\Release
-    echo Generating armeabi-v7a Release CMAKE project ...
-    cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=!ANDROID_TOOLCHAIN! -DANDROID_ABI=armeabi-v7a -DANDROID_PLATFORM=android-21 -DCMAKE_BUILD_TYPE=Release %PROJECT_DIR%
-
-    echo Compiling armeabi-v7a - Release...
-    cmake --build .
-    if %ERRORLEVEL% NEQ 0 goto ERROR
-    for /r %CD% %%f in (*.a) do xcopy /y %%f %OUTPUT_LIBS_RELEASE%\armeabi-v7a\
-    for /r %CD% %%f in (*.so) do xcopy /y %%f %OUTPUT_LIBS_RELEASE%\armeabi-v7a\
-echo Compiling armeabi-v7a DONE
 
 cd %PROJECT_DIR%
 echo Compiling arm64-v8a...
@@ -131,38 +100,6 @@ echo Compiling arm64-v8a...
     for /r %CD% %%f in (*.a) do xcopy /y %%f %OUTPUT_LIBS_RELEASE%\arm64-v8a\
     for /r %CD% %%f in (*.so) do xcopy /y %%f %OUTPUT_LIBS_RELEASE%\arm64-v8a\
 echo Compiling arm64-v8a DONE
-
-cd %PROJECT_DIR%
-echo Compiling x86...
-    if [%BUILD_DEBUG%]==[1] (
-        if not exist %BUILD_DIR%\x86\Debug (
-            mkdir %BUILD_DIR%\x86\Debug
-        )
-        cd %BUILD_DIR%\x86\Debug
-        echo Generating x86 Debug CMAKE project ...
-        cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=!ANDROID_TOOLCHAIN! -DANDROID_ABI=x86 -DANDROID_PLATFORM=android-21 -DCMAKE_BUILD_TYPE=Debug %PROJECT_DIR%
-        if %ERRORLEVEL% NEQ 0 goto ERROR
-
-        echo Compiling x86 - Debug...
-        cmake --build .
-        if %ERRORLEVEL% NEQ 0 goto ERROR
-        for /r %CD% %%f in (*.a) do xcopy /y %%f %OUTPUT_LIBS_DEBUG%\x86\
-        for /r %CD% %%f in (*.so) do xcopy /y %%f %OUTPUT_LIBS_DEBUG%\x86\
-    )
-
-    if not exist %BUILD_DIR%\x86\Release (
-        mkdir %BUILD_DIR%\x86\Release
-    )
-    cd %BUILD_DIR%\x86\Release
-    echo Generating x86 Release CMAKE project ...
-    cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=!ANDROID_TOOLCHAIN! -DANDROID_ABI=x86 -DANDROID_PLATFORM=android-21 -DCMAKE_BUILD_TYPE=Release %PROJECT_DIR%
-
-    echo Compiling x86 - Release...
-    cmake --build .
-    if %ERRORLEVEL% NEQ 0 goto ERROR
-    for /r %CD% %%f in (*.a) do xcopy /y %%f %OUTPUT_LIBS_RELEASE%\x86\
-    for /r %CD% %%f in (*.so) do xcopy /y %%f %OUTPUT_LIBS_RELEASE%\x86\
-echo Compiling x86 DONE
 
 cd %PROJECT_DIR%
 echo Compiling x86_64...

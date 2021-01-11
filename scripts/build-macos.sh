@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-export LIB_NAME=igeNotify
+export LIB_NAME=tensorflow
 
 export CURR_DIR=$PWD
 
@@ -20,7 +20,7 @@ export PATH="$PATH:/usr/local/bin"
 # IGE_LIBS evironment variable, eg. 'echo export IGE_LIBS=/Volumes/Projects/igeEngine/igeLibs > ~/.bash_profile'
 # export IGE_LIBS=$PROJECT_DIR/../igeLibs
 
-export BUILD_DIR=$PROJECT_DIR/build/macos
+export BUILD_DIR=$PROJECT_DIR/../tf_build/macos
 export OUTPUT_DIR=$IGE_LIBS/$LIB_NAME/libs/macos
 
 [ ! -d "$BUILD_DIR" ] && mkdir -p $BUILD_DIR
