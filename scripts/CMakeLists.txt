@@ -8,6 +8,8 @@ endif()
 
 set(TARGET_NAME igeTFLite-static)
 
+set (CMAKE_CXX_STANDARD 17)
+
 project(${TARGET_NAME})
 
 set (TENSORFLOW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)

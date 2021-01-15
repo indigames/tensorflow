@@ -10,7 +10,7 @@ then
     echo "WORKSPACE is unset"; # which mean we run on local machine, not Jenkins
     SCRIPT_PATH=$(greadlink -f "$0"); # installed with 'brew install coreutils'
     SCRIPT_DIR=$(dirname "$SCRIPT_PATH");
-    export WORKSPACE=$SCRIPT_DIR/..;
+    export WORKSPACE=$SCRIPT_DIR;
 fi
 
 export PROJECT_DIR=$WORKSPACE

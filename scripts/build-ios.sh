@@ -10,7 +10,7 @@ then
     echo "WORKSPACE is unset"; # which mean we run on local machine, not Jenkins
     SCRIPT_PATH=$(greadlink -f "$0"); # installed with 'brew install coreutils'
     SCRIPT_DIR=$(dirname "$SCRIPT_PATH");
-    export WORKSPACE=$SCRIPT_DIR/..;
+    export WORKSPACE=$SCRIPT_DIR;
 fi
 
 export PROJECT_DIR=$WORKSPACE
@@ -26,7 +26,7 @@ export CMAKE_TOOLCHAIN_FILE=$IGE_LIBS/cmake/ios.toolchain.cmake
 
 [ ! -d "$BUILD_DIR" ] && mkdir -p $BUILD_DIR
 cd $BUILD_DIR
-cmake $PROJECT_DIR -G Xcode -DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE -DIOS_DEPLOYMENT_TARGET=11.0 -DPLATFORM=OS64
+cmake $PROJECT_DIR -G Xcode -DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE -DIOS_DEPLOYMENT_TARGET=11.0 -DPLATFORM=OS64 -DTFLITE_ENABLE_XNNPACK=OFF
 cmake --build . --config Release -- -jobs $NCORES
 if [ $? -ne 0 ]; then
   echo "Error: CMAKE compile failed!"
@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
 fi
 
 [ ! -d "$OUTPUT_DIR/arm64" ] && mkdir -p $OUTPUT_DIR/arm64
-cp -R -f -p ./Release-iphoneos/*.a $OUTPUT_DIR/arm64
+find . -name \*.a -exec cp {} $OUTPUT_DIR/arm64 \;
 cp -R -f -p ./Release-iphoneos/*.so $OUTPUT_DIR/arm64
 
 echo DONE!
