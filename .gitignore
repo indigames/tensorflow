@@ -48,3 +48,6 @@ Podfile.lock
 Pods
 xcuserdata
 /tf_build
+/_ige_build
+/_ige_release
+/conanfile.py

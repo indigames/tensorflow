@@ -1,19 +1,13 @@
 cmake_minimum_required(VERSION 3.4.1)
-
-file(TO_CMAKE_PATH $ENV{IGE_LIBS} IGE_LIBS)
-
-if (NOT DEFINED APP_STYLE)
-    set(APP_STYLE STATIC)
-endif()
-
 set(TARGET_NAME igeTFLite-static)
 
 set (CMAKE_CXX_STANDARD 17)
 
 project(${TARGET_NAME})
 
-set (TENSORFLOW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set (TENSORFLOW_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
+# [IGE]: tweaks for platforms
 if(DEFINED ANDROID_PLATFORM)
     set (ANDROID 1)
     if(ANDROID_ABI STREQUAL "armeabi-v7a")
@@ -37,18 +31,16 @@ elseif(IOS)
         add_compile_options(-g0 -Ofast)
     endif()
 endif()
+# [/IGE]
 
-set (PYTHON_INCLUDE_DIRS "${IGE_LIBS}/Python/Include")
-if (MSVC)
-	list(APPEND PYTHON_INCLUDE_DIRS "${IGE_LIBS}/Python/PC")
-elseif (OSX)
-	list(APPEND PYTHON_INCLUDE_DIRS "${IGE_LIBS}/Python/Mac")
-elseif (ANDROID)
-	list(APPEND PYTHON_INCLUDE_DIRS "${IGE_LIBS}/Python/Android")
-elseif (IOS)
-	list(APPEND PYTHON_INCLUDE_DIRS "${IGE_LIBS}/Python/IOS")
-endif ()
+# [IGE]: try include conan build config
+if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+endif()
+# [/IGE]
 
+set(PYTHON_INCLUDE_DIRS "${CONAN_INCLUDE_DIRS}")
 
 file(GLOB SOURCES
     "${TENSORFLOW_DIR}/tensorflow/lite/python/interpreter_wrapper/*.h"
@@ -59,14 +51,11 @@ set(INCLUDES
     "${TENSORFLOW_DIR}"
     "${TENSORFLOW_DIR}/tensorflow"
     "${TENSORFLOW_DIR}/tensorflow/lite"
-    "${IGE_LIBS}/pybind11/include"
-    "${IGE_LIBS}/numpy/include"
-    "${IGE_LIBS}/numpy/include/numpy/core/include"
     "${CMAKE_BINARY_DIR}/flatbuffers/include"
     "${PYTHON_INCLUDE_DIRS}"
 )
 
-add_library(${TARGET_NAME} ${APP_STYLE} ${SOURCES})
+add_library(${TARGET_NAME} STATIC ${SOURCES})
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDES})
 
 add_subdirectory(${TENSORFLOW_DIR}/tensorflow/lite ${CMAKE_BINARY_DIR}/tensorflow-lite)
