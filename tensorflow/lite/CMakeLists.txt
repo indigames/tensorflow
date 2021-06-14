@@ -70,7 +70,7 @@ option(TFLITE_ENABLE_GPU "Enable GPU" OFF)
 # https://www.tensorflow.org/lite/guide/ops_select#converting_the_model
 # This is currently not supported.
 option(TFLITE_ENABLE_FLEX "Enable SELECT_TF_OPS" OFF) # TODO: Add support
-option(TFLITE_ENABLE_XNNPACK "Enable XNNPACK backend" ON)
+option(TFLITE_ENABLE_XNNPACK "Enable XNNPACK backend" NOT APPLE) # [IGE]: not support on MacOS
 set(CMAKE_CXX_STANDARD 14)  # Some components require C++14.
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(_TFLITE_ENABLE_NNAPI "${TFLITE_ENABLE_NNAPI}")
