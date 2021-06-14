@@ -39,6 +39,8 @@ elseif(IOS)
 endif()
 # [/IGE]
 
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
+
 if(${APP_STYLE} MATCHES "SHARED")
     find_package (Python3 ${PYTHON_VERSION} EXACT REQUIRED COMPONENTS Development)
 else()
