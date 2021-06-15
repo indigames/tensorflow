@@ -51,7 +51,7 @@ class IgeConan(ConanFile):
                 cmake_cmd += f' -G Ninja -DCMAKE_TOOLCHAIN_FILE={toolchain} -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-21 -DCMAKE_BUILD_TYPE=Release'
         elif self.settings.os == "iOS":
             toolchain = Path(self.source_folder).absolute().as_posix() + '/cmake/ios.toolchain.cmake'
-            cmake_cmd += f' -G Xcode -DCMAKE_TOOLCHAIN_FILE={toolchain} -DIOS_DEPLOYMENT_TARGET=11.0 -DPLATFORM=OS64 -DCMAKE_BUILD_TYPE=Release'
+            cmake_cmd += f' -G Xcode -DCMAKE_TOOLCHAIN_FILE={toolchain} -DIOS_DEPLOYMENT_TARGET=11.0 -DPLATFORM=OS64 -DCMAKE_BUILD_TYPE=Release -Dprotobuf_BUILD_PROTOC_BINARIES=OFF -DgRPC_BUILD_CODEGEN=OFF -DCARES_INSTALL=OFF'
         elif self.settings.os == "Macos":
             cmake_cmd += f' -G Xcode -DOSX=1 -DCMAKE_BUILD_TYPE=Release'
         else:
